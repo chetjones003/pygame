@@ -1,4 +1,4 @@
-import pygame, sys, random
+import pygame, sys, os, random
 from pygame.math import Vector2
 
 
@@ -42,7 +42,8 @@ class FOOD:
             cell_size,
         )
 
-        pygame.draw.rect(screen, (126, 166, 114), food_rect)
+        # pygame.draw.rect(screen, (126, 166, 114), food_rect)
+        screen.blit(apple, food_rect)
 
     def randomize(self):
         self.x = random.randint(0, cell_number - 1)
@@ -92,6 +93,9 @@ cell_size = 40
 cell_number = 15
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
+apple = pygame.image.load(
+    os.path.join("Snake", "Graphics", "apple.png")
+).convert_alpha()
 
 main = MAIN()
 
