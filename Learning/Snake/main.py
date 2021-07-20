@@ -8,12 +8,94 @@ class SNAKE:
         self.direction = Vector2(1, 0)
         self.new_block = False
 
+        # loading sprites
+        self.head_up = pygame.image.load(
+            os.path.join("Snake", "Graphics", "head_up.png")
+        ).convert_alpha()
+        self.head_down = pygame.image.load(
+            os.path.join("Snake", "Graphics", "head_down.png")
+        ).convert_alpha()
+        self.head_right = pygame.image.load(
+            os.path.join("Snake", "Graphics", "head_right.png")
+        ).convert_alpha()
+        self.head_left = pygame.image.load(
+            os.path.join("Snake", "Graphics", "head_left.png")
+        ).convert_alpha()
+
+        self.tail_up = pygame.image.load(
+            os.path.join("Snake", "Graphics", "tail_up.png")
+        ).convert_alpha()
+        self.tail_down = pygame.image.load(
+            os.path.join("Snake", "Graphics", "tail_down.png")
+        ).convert_alpha()
+        self.tail_right = pygame.image.load(
+            os.path.join("Snake", "Graphics", "tail_right.png")
+        ).convert_alpha()
+        self.tail_left = pygame.image.load(
+            os.path.join("Snake", "Graphics", "tail_left.png")
+        ).convert_alpha()
+
+        self.body_vertical = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_vertical.png")
+        ).convert_alpha()
+        self.body_horizontal = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_horizontal.png")
+        ).convert_alpha()
+
+        self.body_tr = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_tr.png")
+        ).convert_alpha()
+        self.body_tl = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_tl.png")
+        ).convert_alpha()
+        self.body_br = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_br.png")
+        ).convert_alpha()
+        self.body_bl = pygame.image.load(
+            os.path.join("Snake", "Graphics", "body_bl.png")
+        ).convert_alpha()
+
     def draw_snake(self):
-        for block in self.body:
-            block_rect = pygame.Rect(
-                int(block.x * cell_size), int(block.y * cell_size), cell_size, cell_size
-            )
-            pygame.draw.rect(screen, (0, 0, 0), block_rect)
+        self.update_head_graphics()
+        self.update_tail_graphics()
+
+        for index, block in enumerate(self.body):
+            # create rect for snake
+            x_pos = int(block.x * cell_size)
+            y_pos = int(block.y * cell_size)
+            block_rect = pygame.Rect(x_pos, y_pos, cell_size, cell_size)
+
+            # checking if head
+            if index == 0:
+                screen.blit(self.head, block_rect)
+            elif index == len(self.body) - 1:
+                screen.blit(self.tail, block_rect)
+            else:
+                pygame.draw.rect(screen, (0, 0, 0), block_rect)
+
+    def update_head_graphics(self):
+        # display proper head sprite based on direction
+        head_direction = self.body[1] - self.body[0]
+        if head_direction == Vector2(1, 0):
+            self.head = self.head_left
+        if head_direction == Vector2(-1, 0):
+            self.head = self.head_right
+        if head_direction == Vector2(0, 1):
+            self.head = self.head_up
+        if head_direction == Vector2(0, -1):
+            self.head = self.head_down
+
+    def update_tail_graphics(self):
+        # display proper tail sprite based on direction
+        tail_direction = self.body[-2] - self.body[-1]
+        if tail_direction == Vector2(1, 0):
+            self.tail = self.tail_left
+        if tail_direction == Vector2(-1, 0):
+            self.tail = self.tail_right
+        if tail_direction == Vector2(0, 1):
+            self.tail = self.tail_up
+        if tail_direction == Vector2(0, -1):
+            self.tail = self.tail_down
 
     def move_snake(self):
         if self.new_block == True:
