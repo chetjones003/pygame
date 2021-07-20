@@ -71,7 +71,48 @@ class SNAKE:
             elif index == len(self.body) - 1:
                 screen.blit(self.tail, block_rect)
             else:
-                pygame.draw.rect(screen, (0, 0, 0), block_rect)
+                previous_block = self.body[index + 1] - block
+                next_block = self.body[index - 1] - block
+                # checking if sprite should be vertical
+                if previous_block.x == next_block.x:
+                    screen.blit(self.body_vertical, block_rect)
+                # checking if sprite should be horizontal
+                elif previous_block.y == next_block.y:
+                    screen.blit(self.body_horizontal, block_rect)
+                # checking if sprite should be corner
+                else:
+                    # top left
+                    if (
+                        previous_block.x == -1
+                        and next_block.y == -1
+                        or previous_block.y == -1
+                        and next_block.x == -1
+                    ):
+                        screen.blit(self.body_tl, block_rect)
+                    # bottom left
+                    elif (
+                        previous_block.x == -1
+                        and next_block.y == 1
+                        or previous_block.y == 1
+                        and next_block.x == -1
+                    ):
+                        screen.blit(self.body_bl, block_rect)
+                    # top right
+                    elif (
+                        previous_block.x == 1
+                        and next_block.y == -1
+                        or previous_block.y == -1
+                        and next_block.x == 1
+                    ):
+                        screen.blit(self.body_tr, block_rect)
+                    # bottom right
+                    elif (
+                        previous_block.x == 1
+                        and next_block.y == 1
+                        or previous_block.y == 1
+                        and next_block.x == 1
+                    ):
+                        screen.blit(self.body_br, block_rect)
 
     def update_head_graphics(self):
         # display proper head sprite based on direction
