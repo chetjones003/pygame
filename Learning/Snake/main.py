@@ -185,8 +185,38 @@ class MAIN:
         self.check_fail()
 
     def draw_elements(self):
+        self.draw_grass()
         self.food.draw_food()
         self.snake.draw_snake()
+        self.draw_score()
+
+    # create checkboard pattern
+    def draw_grass(self):
+        grass_color = (145, 209, 61)
+
+        for row in range(cell_number):
+            if row % 2 == 0:
+                for col in range(cell_number):
+                    if col % 2 == 0:
+                        grass_rect = pygame.Rect(
+                            col * cell_size, row * cell_size, cell_size, cell_size
+                        )
+                        pygame.draw.rect(screen, grass_color, grass_rect)
+            if row % 2 != 0:
+                for col in range(cell_number):
+                    if col % 2 != 0:
+                        grass_rect = pygame.Rect(
+                            col * cell_size, row * cell_size, cell_size, cell_size
+                        )
+                        pygame.draw.rect(screen, grass_color, grass_rect)
+
+    def draw_score(self):
+        score_text = "Score: " + str(len(self.snake.body) - 3)
+        score_surface = game_font.render(score_text, True, (56, 74, 12))
+        score_x = int(cell_size * cell_number - 60)
+        score_y = int(cell_size * cell_number - 30)
+        score_rect = score_surface.get_rect(center=(score_x, score_y))
+        screen.blit(score_surface, score_rect)
 
     def check_collision(self):
         if self.food.pos == self.snake.body[0]:
@@ -213,12 +243,13 @@ class MAIN:
 
 pygame.init()
 cell_size = 40
-cell_number = 15
+cell_number = 17
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
 apple = pygame.image.load(
     os.path.join("Snake", "Graphics", "apple.png")
 ).convert_alpha()
+game_font = pygame.font.SysFont("Ubuntu Mono", 25)
 
 main = MAIN()
 
