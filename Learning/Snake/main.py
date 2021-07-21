@@ -1,4 +1,7 @@
-import pygame, sys, os, random
+import pygame
+import sys
+import os
+import random
 from pygame.math import Vector2
 
 
@@ -139,7 +142,7 @@ class SNAKE:
             self.tail = self.tail_down
 
     def move_snake(self):
-        if self.new_block == True:
+        if self.new_block:
             body_copy = self.body[:]
             body_copy.insert(0, body_copy[0] + self.direction)
             self.body = body_copy[:]
@@ -199,8 +202,7 @@ class MAIN:
                 for col in range(cell_number):
                     if col % 2 == 0:
                         grass_rect = pygame.Rect(
-                            col * cell_size, row * cell_size, cell_size, cell_size
-                        )
+                            col * cell_size, row * cell_size, cell_size, cell_size)
                         pygame.draw.rect(screen, grass_color, grass_rect)
             if row % 2 != 0:
                 for col in range(cell_number):
@@ -244,7 +246,8 @@ class MAIN:
 pygame.init()
 cell_size = 40
 cell_number = 17
-screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
+screen = pygame.display.set_mode(
+    (cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
 apple = pygame.image.load(
     os.path.join("Snake", "Graphics", "apple.png")
